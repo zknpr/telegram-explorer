@@ -6,7 +6,7 @@ description: >
   or group; or asks to communicate or share a file through Telegram.
 ---
 
-# Telegram Explorer
+# Unofficial Telegram Explorer
 
 Browse, read, search, send, and interact with Telegram via Telethon (MTProto Client API),
 acting as the user's own Telegram account.
@@ -51,13 +51,14 @@ directory per account). `TELEGRAM_API_ID` / `TELEGRAM_API_HASH` env vars take pr
 ## How to Use
 
 `<skill-dir>` below is the directory containing this SKILL.md. Run every operation with
-[uv](https://docs.astral.sh/uv/), which installs the dependency (Telethon) automatically:
+[uv](https://docs.astral.sh/uv/), which installs the pinned dependency (Telethon, verified
+against `scripts/telegram_client.py.lock`) automatically:
 
 ```bash
-uv run --script "<skill-dir>/scripts/telegram_client.py" <subcommand> [args]
+uv run --locked --script "<skill-dir>/scripts/telegram_client.py" <subcommand> [args]
 ```
 
-Without uv, use any Python ≥ 3.11 that has `telethon>=1.42.0` installed, e.g. a venv created
+Without uv, use any Python ≥ 3.11 that has `telethon==1.45.0` installed, e.g. a venv created
 per the README: `~/.local/share/telegram-explorer/venv/bin/python "<skill-dir>/scripts/telegram_client.py" ...`
 
 All output is JSON on stdout. Errors are JSON on stderr with a non-zero exit code. Parse the

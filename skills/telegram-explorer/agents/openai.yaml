@@ -1,4 +1,4 @@
 interface:
-  display_name: "Telegram Explorer"
-  short_description: "Browse, send, and interact with Telegram messages and channels"
+  display_name: "Unofficial Telegram Explorer"
+  short_description: "Telegram on your own account"
   default_prompt: "Use $telegram-explorer:telegram-explorer to check the latest messages in a Telegram chat."

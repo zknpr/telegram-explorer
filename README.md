@@ -1,9 +1,12 @@
-# Telegram Explorer
+# Unofficial Telegram Explorer
 
 An agent skill that lets AI coding agents read and act on **your own Telegram account**: list
 chats, read and search messages, send, reply, forward, react, edit, delete, press bot buttons,
 and move media in both directions. It uses [Telethon](https://github.com/LonamiWebs/Telethon)
 over Telegram's MTProto client API, so the agent acts as you, not as a bot.
+
+**Unofficial.** This project is not affiliated with, endorsed by, or supported by Telegram. It
+uses the Telegram API with an `api_id` you create yourself.
 
 Packaged for Claude Code, Codex, and Gemini CLI. The skill itself is a plain
 [`SKILL.md`](skills/telegram-explorer/SKILL.md) folder, so any agent that reads Agent Skills
@@ -21,6 +24,9 @@ Installing this gives an agent the same access to your Telegram account that you
 - **The session file is your account.** `telegram.session` holds the login key. Anyone who reads
   it is logged in as you, with no code or 2FA prompt. It is created owner-only (`0600`); keep it
   that way and keep it out of backups you share.
+- **Message content goes to your AI provider.** Whatever the agent reads (including other
+  people's messages) becomes part of its context and is processed under your AI provider's
+  terms. See [PRIVACY.md](PRIVACY.md).
 - **Telegram's terms apply.** Use your own `api_id`. Automated or bulk activity on a user account
   can get it limited or banned.
 
@@ -31,10 +37,26 @@ What the code enforces (see [Security model](#security-model) for details):
 - Media downloads go outside the current project by default.
 - Commands never prompt for a login; they fail with `NotLoggedInError` instead.
 
+## What it runs, sends, and fetches
+
+- **Runs** one local Python script, `skills/telegram-explorer/scripts/telegram_client.py`, once
+  per command. With uv, the first run installs Telethon 1.45.0 and its three dependencies
+  (`pyaes`, `pyasn1`, `rsa`) from PyPI, pinned by hash in `telegram_client.py.lock` and
+  enforced with `--locked`. Video uploads also run `ffprobe`, if it is installed, to read the
+  video's dimensions and duration.
+- **Sends** network traffic only to Telegram's MTProto servers (Telethon's built-in data-center
+  addresses), plus, on first run with uv, PyPI for the pinned dependencies and, only if no
+  Python ≥ 3.11 is installed, uv's managed-Python download from GitHub. There is no telemetry,
+  analytics, or other destination.
+- **Reads** local files only when you ask it to `upload` them, plus its own state directory.
+- **Writes** only to its state directory (`~/.config/telegram-explorer/`) and the download
+  directory (`~/.local/share/telegram-explorer/downloads/` or the `--out` you pass).
+
 ## Requirements
 
 - Python ≥ 3.11
-- [uv](https://docs.astral.sh/uv/) (recommended: it installs Telethon automatically) or pip
+- [uv](https://docs.astral.sh/uv/) (recommended: it installs the pinned Telethon automatically;
+  tested with uv 0.9.17), or pip
 - Optional: `ffprobe` (from ffmpeg), so uploaded videos play inline
 
 ## Install
@@ -56,7 +78,7 @@ A `.cursor-plugin/plugin.json` manifest is included but untested (see [Compatibi
 
    ```bash
    git clone https://github.com/zknpr/telegram-explorer
-   uv run --script telegram-explorer/skills/telegram-explorer/scripts/telegram_client.py login
+   uv run --locked --script telegram-explorer/skills/telegram-explorer/scripts/telegram_client.py login
    ```
 
    The session is stored in `~/.config/telegram-explorer/`, not next to the script, so logging in
@@ -72,11 +94,18 @@ python3 -m venv ~/.local/share/telegram-explorer/venv
 
 `login` is the only interactive command. Don't let an agent run it.
 
-## Usage
+## Examples
 
-Ask your agent in plain language, e.g. "summarize unread messages in the dev group" or "send
-the build log to @alice". The agent runs the CLI and reads its JSON output. For the full command
-list, see [`SKILL.md`](skills/telegram-explorer/SKILL.md) and
+Ask your agent in plain language:
+
+- "What did I miss in the *Dev Team* group today? Summarize the unread messages."
+- "Search my Telegram for the message where someone shared the staging database URL."
+- "Send the build log at `./build.log` to @alice with the caption 'failing on main'."
+- "List the forum topics in the *Project X* group and show the last 10 messages in *Releases*."
+- "Alias @my_long_channel_name as 'news', then show me its pinned messages."
+
+The agent runs the CLI and reads its JSON output. For the full command list, see
+[`SKILL.md`](skills/telegram-explorer/SKILL.md) and
 [`references/api-reference.md`](skills/telegram-explorer/references/api-reference.md).
 
 Chats can be referenced by `@username`, numeric id, phone number, invite link, cached name, or
@@ -100,6 +129,7 @@ an alias you define (`alias-add <chat> "mom"`). `last` refers to the most recent
 | Other local users read the session | Process umask `077`. Session and credentials files are `chmod 0600` on every run. | Root and backups are out of scope. |
 | Sender-named downloads planted in the working project (`conftest.py`, …) | Default download dir is outside the current directory. Telethon strips path components and won't overwrite existing files. | Passing `--out .` brings the risk back. |
 | Agent stuck on an interactive login prompt | Commands connect without Telethon's interactive `start()` and fail with `NotLoggedInError` | — |
+| Tampered or drifting dependency | Telethon is pinned to an exact version and verified by hash from the lockfile (`uv run --locked`) | The pip fallback pins the version but not hashes. |
 
 Please report vulnerabilities through GitHub's private vulnerability reporting on this repository.
 
@@ -110,10 +140,10 @@ Telegram session.
 
 | Harness | Manifest | Status |
 |---|---|---|
-| Claude Code | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` | Validated with `claude plugin validate`, installed from a local marketplace (2.1.295) |
-| Codex | `.codex-plugin/plugin.json` (marketplace read from `.claude-plugin/marketplace.json`) | Installed from a local marketplace (0.162.0) |
-| Gemini CLI | `gemini-extension.json` | Validated and linked; skill discovered (0.32.1) |
-| Cursor | `.cursor-plugin/plugin.json` | Untested |
+| Claude Code | `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json` | Validated with `claude plugin validate`, installed from GitHub (2.1.295) |
+| Codex | `.codex-plugin/plugin.json` (marketplace read from `.claude-plugin/marketplace.json`) | Installed from GitHub (0.162.0) |
+| Gemini CLI | `gemini-extension.json` | Installed from GitHub; skill discovered (0.32.1) |
+| Cursor | `.cursor-plugin/plugin.json` | Validated against Cursor's published schema; not installed |
 | Others (OpenCode, …) | `skills/telegram-explorer/` | Untested |
 | Windows | — | Untested |
 
@@ -121,11 +151,12 @@ Telegram session.
 
 ```bash
 cd skills/telegram-explorer/scripts
-uv run --no-project --with 'telethon>=1.42.0' python -m unittest discover -s tests -t .
+uv run --no-project --with 'telethon==1.45.0' python -m unittest discover -s tests -t .
 ```
 
-The tests are offline: Telegram calls go to a fake client.
+The tests are offline: Telegram calls go to a fake client. After changing the dependency line
+in `telegram_client.py`, regenerate the lockfile with `uv lock --script telegram_client.py`.
 
 ## License
 
-[MIT](LICENSE). Not affiliated with Telegram.
+[MIT](LICENSE).

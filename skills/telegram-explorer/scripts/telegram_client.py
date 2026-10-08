@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["telethon>=1.42.0"]
+# dependencies = ["telethon==1.45.0"]
 # ///
 """
 Telegram client CLI for AI coding agents.

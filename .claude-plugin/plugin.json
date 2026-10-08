@@ -1,7 +1,8 @@
 {
   "name": "telegram-explorer",
-  "version": "1.0.0",
-  "description": "Read, search, send, and manage Telegram messages, chats, channels, groups, and media from your AI coding agent, using your own account via Telethon. Includes a persistent chat cache with aliases.",
+  "displayName": "Unofficial Telegram Explorer",
+  "version": "1.0.1",
+  "description": "Unofficial Telegram client for AI coding agents: read, search, send, and manage messages, chats, channels, groups, and media on your own account via the Telegram API (Telethon). Includes a persistent chat cache with aliases.",
   "author": {
     "name": "zero",
     "url": "https://github.com/zknpr"
