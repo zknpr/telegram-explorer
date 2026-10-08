@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+
+# Never commit Telegram state if a state dir is ever pointed inside the repo.
+*.session
+*.session-journal
+credentials.json
+cache.json
+cache.json.corrupt.*

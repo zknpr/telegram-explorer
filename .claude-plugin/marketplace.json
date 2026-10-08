@@ -1,0 +1,21 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "telegram-explorer",
+  "description": "Telegram Explorer plugin",
+  "owner": {
+    "name": "zero"
+  },
+  "plugins": [
+    {
+      "name": "telegram-explorer",
+      "source": "./",
+      "description": "Read, search, send, and manage Telegram messages, chats, channels, groups, and media from your AI coding agent, using your own account via Telethon. Includes a persistent chat cache with aliases.",
+      "version": "1.0.0",
+      "author": {
+        "name": "zero",
+        "url": "https://github.com/zknpr"
+      },
+      "category": "productivity"
+    }
+  ]
+}

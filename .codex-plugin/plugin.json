@@ -1,0 +1,34 @@
+{
+  "name": "telegram-explorer",
+  "version": "1.0.0",
+  "description": "Read, search, send, and manage Telegram messages, chats, channels, groups, and media from your AI coding agent, using your own account via Telethon. Includes a persistent chat cache with aliases.",
+  "keywords": [
+    "telegram",
+    "telethon",
+    "messaging",
+    "chat",
+    "skills"
+  ],
+  "author": {
+    "name": "zero",
+    "url": "https://github.com/zknpr"
+  },
+  "homepage": "https://github.com/zknpr/telegram-explorer",
+  "repository": "https://github.com/zknpr/telegram-explorer",
+  "license": "MIT",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Telegram Explorer",
+    "shortDescription": "Browse, send, and interact with Telegram messages and channels",
+    "longDescription": "Read, search, send, and manage Telegram messages, chats, channels, groups, and media from your AI coding agent, using your own account via Telethon. Includes a persistent chat cache with aliases.",
+    "developerName": "zero",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Check my latest unread Telegram messages."
+    ]
+  }
+}
