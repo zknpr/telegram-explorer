@@ -157,6 +157,12 @@ uv run --no-project --with 'telethon==1.45.0' python -m unittest discover -s tes
 The tests are offline: Telegram calls go to a fake client. After changing the dependency line
 in `telegram_client.py`, regenerate the lockfile with `uv lock --script telegram_client.py`.
 
+## Icon
+
+![Unofficial Telegram Explorer icon](assets/icon.png)
+
+Original artwork for this project. It is not, and is not derived from, the Telegram logo.
+
 ## License
 
 [MIT](LICENSE).

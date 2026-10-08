@@ -3,8 +3,9 @@
   "displayName": "Unofficial Telegram Explorer",
   "version": "1.0.1",
   "description": "Unofficial Telegram client for AI coding agents: read, search, send, and manage messages, chats, channels, groups, and media on your own account via the Telegram API (Telethon). Includes a persistent chat cache with aliases.",
+  "icon": "assets/icon.png",
   "author": {
-    "name": "zero",
+    "name": "zknpr",
     "url": "https://github.com/zknpr"
   },
   "homepage": "https://github.com/zknpr/telegram-explorer",

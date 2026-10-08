@@ -10,7 +10,7 @@
     "skills"
   ],
   "author": {
-    "name": "zero",
+    "name": "zknpr",
     "url": "https://github.com/zknpr"
   },
   "homepage": "https://github.com/zknpr/telegram-explorer",
@@ -21,7 +21,7 @@
     "displayName": "Unofficial Telegram Explorer",
     "shortDescription": "Telegram on your own account",
     "longDescription": "Unofficial Telegram client for AI coding agents: read, search, send, and manage messages, chats, channels, groups, and media on your own account via the Telegram API (Telethon). Includes a persistent chat cache with aliases.",
-    "developerName": "zero",
+    "developerName": "zknpr",
     "category": "Productivity",
     "capabilities": [
       "Read",
@@ -29,6 +29,8 @@
     ],
     "defaultPrompt": [
       "Check my latest unread Telegram messages."
-    ]
+    ],
+    "composerIcon": "./assets/icon.png",
+    "logo": "./assets/icon.png"
   }
 }
